@@ -15,12 +15,13 @@ A simple circle ci command line application for getting the status of pipelines.
 
 # Supported Methods
 Currently only two methods are supported:
-- get_branch_pipeline returns pipeline information
-- get_latest_workflow requires pipeline id, returns workflow information for the given pipeline id and branch
+- `get_branch_pipeline` returns pipeline information
+- `get_workflow requires` pipeline id, returns workflow information for the given pipeline id and branch
+- `get_my_branch_pipeline` returns only your pipelines for a branch
 
 __Examples:__
 
-`get_branch_pipeline`
+`get_branch_pipeline` and `get_my_branch_pipeline`
 
 Getting pipline information for a branch, will return `JSON` this can then be piped into `jq` to query or format
 

@@ -8,6 +8,7 @@ METHOD=
 BRANCH=
 PIPELINE_ID=
 PIPELINE_NUMBER=
+PROJECT_SLUG=
 
 function check_circle_token() {
     if [ -z $CIRCLE_TOKEN ]; then
@@ -85,30 +86,55 @@ function get_args() {
     check_arg $BRANCH
     check_arg $PROJECT
     check_arg $COMPANY
+    PROJECT_SLUG="$VCS/$COMPANY/$PROJECT"
 }
 
-function get_branch_pipeline() {
+function get_my_branch_pipeline() {
+    : '
+        Return first page of your pipelines for branch
+    '
     curl -s \
-        --url "$BASE_URL/project/$VCS/$COMPANY/$PROJECT/pipeline?branch=$BRANCH" \
+        --url "$BASE_URL/project/$PROJECT_SLUG/pipeline/mine?branch=$BRANCH" \
         --header "Circle-Token: $CIRCLE_TOKEN"
 }
 
-function get_latest_workflow() {
+function get_branch_pipeline() {
+    : '
+        Return first page of pipelines for branch
+    '
     curl -s \
-        url "$BASE_URL/pipeline/$PIPELINE_ID/workflow" \
+        --url "$BASE_URL/project/$PROJECT_SLUG/pipeline?branch=$BRANCH" \
+        --header "Circle-Token: $CIRCLE_TOKEN"
+}
+
+function get_workflow() {
+    : '
+        Return specific information about workflow for a unique pipeline id
+    '
+    curl -s \
+        --url "$BASE_URL/pipeline/$PIPELINE_ID/workflow" \
         --header "Circle-Token: $CIRCLE_TOKEN"
 }
 
 function call_method() {
+    : '
+        Execute method from comand line
+    '
     case $1 in
-        "get_latest_workflow")
-        get_latest_workflow
+        "get_workflow")
+        get_workflow
+        exit 0
         ;;
         "get_branch_pipeline")
         get_branch_pipeline
+        exit 0
         ;;
-        default)
-        echo "No method: '$1' found"
+        "get_my_branch_pipeline")
+        get_my_branch_pipeline
+        exit 0
+        ;;
+        *)
+        echo '{"error": "No method:' "$1" 'found" }'
     esac
 }
 
