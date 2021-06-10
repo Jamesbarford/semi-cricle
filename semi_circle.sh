@@ -9,6 +9,13 @@ BRANCH=
 PIPELINE_ID=
 PIPELINE_NUMBER=
 
+function check_circle_token() {
+    if [ -z $CIRCLE_TOKEN ]; then
+        echo "'CIRCLE_TOKEN must be set'"
+        exit 1
+    fi
+}
+
 function check_arg() {
     if [ -z $1 ]; then
         print_usage
@@ -16,8 +23,8 @@ function check_arg() {
 }
 
 function print_usage() {
-Usage: $0 -p <project> -b <branch> -c <company> -m <method> -i <pipeline_id> [-v --vcs <version control>]
     cat <<EOH
+Usage: $0 -p <project> -b <branch> -c <company> -m <method> -i <pipeline_id> [-v --vcs <version control>]
 
 Where:
     - project:           Name of your project
@@ -94,11 +101,11 @@ function get_latest_workflow() {
 
 function call_method() {
     case $1 in
-        "get_latest")
-        get_latest
+        "get_latest_workflow")
+        get_latest_workflow
         ;;
-        "get_workflow_status")
-        get_workflow_status
+        "get_branch_pipeline")
+        get_branch_pipeline
         ;;
         default)
         echo "No method: '$1' found"
@@ -106,7 +113,7 @@ function call_method() {
 }
 
 function execute() {
-    check_arg $CIRCLE_TOKEN
+    check_circle_token
     get_args $@
     call_method $METHOD
 }
