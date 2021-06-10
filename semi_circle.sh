@@ -16,8 +16,8 @@ function check_arg() {
 }
 
 function print_usage() {
-    cat <<EOH
 Usage: $0 -p <project> -b <branch> -c <company> -m <method> -i <pipeline_id> [-v --vcs <version control>]
+    cat <<EOH
 
 Where:
     - project:           Name of your project
@@ -40,39 +40,39 @@ function get_args() {
 	key="$1"
 
 	case $key in
-			-i|--pipeline_id)
-			PIPELINE_ID="$2"
-			shift
-			shift
-			;;
-			-p|--project)
-			PROJECT="$2"
-			shift # past argument
-			shift # past value
-			;;
-			-c|--company)
-			COMPANY="$2"
-			shift
-			shift
-			;;
-			-b|--branch)
-			BRANCH="$2"
-			shift
-			shift
-			;;
-			-m|--method)
-			METHOD="$2"
-			shift
-			shift
-			;;
-			--default)
-			DEFAULT=YES
-			shift # past argument
-			;;
-			*)    # unknown option
-			POSITIONAL+=("$1") # save it in an array for later
-			shift # past argument
-			;;
+		-i|--pipeline_id)
+		PIPELINE_ID="$2"
+		shift
+		shift
+		;;
+		-p|--project)
+		PROJECT="$2"
+		shift # past argument
+		shift # past value
+		;;
+		-c|--company)
+		COMPANY="$2"
+		shift
+		shift
+		;;
+		-b|--branch)
+		BRANCH="$2"
+		shift
+		shift
+		;;
+		-m|--method)
+		METHOD="$2"
+		shift
+		shift
+		;;
+		--default)
+		DEFAULT=YES
+		shift # past argument
+		;;
+		*)    # unknown option
+		POSITIONAL+=("$1") # save it in an array for later
+		shift # past argument
+		;;
 	esac
 	done
 	check_arg $BRANCH
