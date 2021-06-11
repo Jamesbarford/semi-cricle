@@ -16,7 +16,7 @@ FMT_NORMAL=$(tput sgr0)
 function print_usage() {
     cat <<EOH
 Usage:
-    $0 -p <project> -b <branch> -c <company> -m <method> -i <pipeline_id> [-v --vcs <version control>] -h
+    $0 -p <project> -b <branch> -c <company> -m <method> -i <pipeline_id> [-v <version_control> -h help]
 
 Where:
     ${FMT_BOLD}-p <project>:${FMT_NORMAL}
