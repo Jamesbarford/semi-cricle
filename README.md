@@ -33,7 +33,7 @@ Getting pipline information for a branch, will return `JSON` this can then be pi
   -m get_branch_pipeline
 ```
 
-`get_latest_workflow`
+`get_workflow`
 
 In order to obtain the pipeline id, you will probably need to run the above command first to find the id and then subsequently run this:
 
@@ -43,5 +43,5 @@ In order to obtain the pipeline id, you will probably need to run the above comm
   -p amazing_project \
   -c wow_company \
   -i 13123-asddwe-12313-dsada \
-  -m get_workflow_status
+  -m get_workflow
 ```
