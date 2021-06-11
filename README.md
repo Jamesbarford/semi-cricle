@@ -27,8 +27,8 @@ Getting pipline information for a branch, will return `JSON` this can then be pi
 ./semi_circle.sh \
   -b dev \
   -p amazing_project \
-	-c wow_company \
-	-m get_branch_pipeline
+  -c wow_company \
+  -m get_branch_pipeline
 ```
 
 `get_workflow`
