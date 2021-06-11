@@ -29,8 +29,8 @@ Getting pipline information for a branch, will return `JSON` this can then be pi
 ./semi_circle.sh \
   -b dev \
   -p amazing_project \
-	-c wow_company \
-	-m get_branch_pipeline
+  -c wow_company \
+  -m get_branch_pipeline
 ```
 
 `get_latest_workflow`
@@ -40,8 +40,8 @@ In order to obtain the pipeline id, you will probably need to run the above comm
 ```sh
 ./semi_circle.sh \
   -b dev \
-	-p amazing_project \
-	-c wow_company \
-	-i 13123-asddwe-12313-dsada \
-	-m get_workflow_status
+  -p amazing_project \
+  -c wow_company \
+  -i 13123-asddwe-12313-dsada \
+  -m get_workflow_status
 ```
