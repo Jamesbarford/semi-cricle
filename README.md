@@ -14,7 +14,7 @@ A simple circle ci command line application for getting the status of pipelines.
 - `-v` version control system, defaults to github
 
 # Supported Methods
-Currently only two methods are supported:
+Currently three methods are supported:
 - `get_branch_pipeline` returns pipeline information
 - `get_workflow requires` pipeline id, returns workflow information for the given pipeline id and branch
 - `get_my_branch_pipeline` returns only your pipelines for a branch
