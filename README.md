@@ -43,7 +43,7 @@ In order to obtain the pipeline id, you will probably need to run the above comm
 
 `list_envionment_variables`
 
-Gets all teh environment variables for a project, the values are masked
+Gets all the environment variables for a project, the values are masked
 
 ```sh
 ./semi_circle.sh \
