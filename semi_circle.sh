@@ -9,6 +9,7 @@ PROJECT=
 COMPANY=
 METHOD=
 BRANCH=
+OS=$(uname -o | awk '{print tolower($0)}')
 
 FMT_BOLD=$(tput bold)
 FMT_NORMAL=$(tput sgr0)
@@ -107,6 +108,19 @@ function check_pipeline_id() {
         echo "-i <pipeline_id> missing"
         exit 1
     fi
+}
+
+function sys_notify() {
+    : '
+        Function will make a bell sound in the terminal and fire off a system
+        notifcation
+    '
+    local MSG=$1
+    if [[ $OS == *"linux"*  ]]; then
+        zenity --notification --text "${MSG}"
+    fi
+    tput bel
+    echo $MSG
 }
 
 function create_slug() {
@@ -254,9 +268,9 @@ function poll_workflow() {
     done
 
     if [ $WORKFLOW_COUNT == $DONE_COUNT ]; then
-        echo "Pipline success!"
+        sys_notify "Pipline success!"
     else
-        echo "Pipeline failed"
+        sys_notify "Pipeline failed"
     fi
 }
 

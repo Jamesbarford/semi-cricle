@@ -1,7 +1,12 @@
-# WIP: semi-circle
-A simple circle ci command line application for getting the status of pipelines. 
+# semi-circle
+A simple circleci command line application for getting the status of pipelines. 
 
-Has the functionality to poll a workflow untill either success or failure
+Has the functionality to poll a workflow until either success or failure. A system notifcation will be dispatched on linux when the workflow has finished
+
+## Dependencies
+- `curl`
+- `jq`
+- A circleci account and API key
 
 # Command line arguments
 - `-b` Name of branch
@@ -39,8 +44,8 @@ In order to obtain the pipeline id, you will probably need to run the above comm
 
 ```sh
 ./semi_circle.sh \
-	-i 13123-asddwe-12313-dsada \
-	-m get_workflow
+  -i 13123-asddwe-12313-dsada \
+  -m get_workflow
 ```
 
 `poll_workflow`
@@ -50,8 +55,8 @@ The time between invokations is 5 seconds
 
 ```sh
 ./semi_circle.sh \
-	-i 13123-asddwe-12313-dsada \
-	-m poll_workflow
+  -i 13123-asddwe-12313-dsada \
+  -m poll_workflow
 ```
 
 
