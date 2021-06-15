@@ -67,12 +67,25 @@ Methods:
             $0 -p <project> -b <branch> -c <company> -m get_my_pipelines
         Returns:
             A list of all your pipelines for a project for every branch you've used/created
-            
+
+    ${FMT_BOLD}poll_workflow${FMT_NORMAL}
+        Usage:
+            $0 -i <pipeline_id> -m poll_workflow
+        Returns:
+            Will poll the workflow untill it either succeeds or fails, echoing an update
+            NOTE: this does not print JSON to standard out and requires 'jq' to be installed
 
 Additional:
     - ${FMT_BOLD}'CIRCLE_TOKEN'${FMT_NORMAL} must be set to authorise api calls to circleci
 EOH
 exit 0
+}
+
+function check_jq() {
+    if [ -z jq ]; then
+        echo "'jq' must be installed"
+        exit 1
+    fi
 }
 
 function check_circle_token() {
@@ -85,6 +98,13 @@ function check_circle_token() {
 function check_branch() {
     if [ -z $BRANCH ]; then
         echo "-b <branch> must be set"
+        exit 1
+    fi
+}
+
+function check_pipeline_id() {
+    if [ -z $PIPELINE_ID ]; then
+        echo "-i <pipeline_id> missing"
         exit 1
     fi
 }
@@ -192,18 +212,57 @@ function get_workflow() {
     : '
         Return specific information about workflow for a unique pipeline id
     '
-    if [ -z $PIPELINE_ID ]; then
-        echo "-i <pipeline_id> missing"
-        exit 1
-    fi
+    check_pipeline_id
     curl -s \
         --url "$BASE_URL/pipeline/$PIPELINE_ID/workflow" \
         --header "Circle-Token: $CIRCLE_TOKEN"
 }
 
+function poll_workflow() {
+    check_jq
+    : '
+        Polls workflow until it is in a terminal state
+    '
+    local IS_DONE=0
+    while [ $IS_DONE == 0 ]; do
+        local RESPONSE=$(get_workflow)
+        local STATUS=$(echo $RESPONSE | jq -r '.items[].status')
+        local WORKFLOW_NAME=$(echo $RESPONSE | jq -r '.items[].name')
+        local WORKFLOW_COUNT=${#RESPONSE[@]}
+        local DONE_COUNT=0
+
+        for (( i = 0; i < $WORKFLOW_COUNT; ++i )); do
+            echo "Workflow name: ${FMT_BOLD}$WORKFLOW_NAME${FMT_NORMAL}, status: ${FMT_BOLD}$STATUS${FMT_NORMAL}"
+            case $STATUS in
+                "success")
+                    DONE_COUNT=$((DONE_COUNT + 1))
+                ;;
+                "failing"|"error")
+                    IS_DONE=1
+                    break
+                ;;
+            esac
+            if [ $WORKFLOW_COUNT == $DONE_COUNT ];then
+                IS_DONE=1
+                break
+            fi
+        done
+        if [ $IS_DONE == 1 ]; then
+            break
+        fi
+        sleep 5
+    done
+
+    if [ $WORKFLOW_COUNT == $DONE_COUNT ]; then
+        echo "Pipline success!"
+    else
+        echo "Pipeline failed"
+    fi
+}
+
 function call_method() {
     : '
-        Execute method from comand line
+        Execute method from command line
     '
     if [ -z $1 ]; then
         echo "-m <method> must be set"
@@ -228,6 +287,10 @@ function call_method() {
         ;;
         "get_my_branch_pipeline")
             get_my_branch_pipeline
+            exit 0
+        ;;
+        "poll_workflow")
+            poll_workflow
             exit 0
         ;;
         *)
