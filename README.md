@@ -51,7 +51,7 @@ The time between invokations is 5 seconds
 ```sh
 ./semi_circle.sh \
 	-i 13123-asddwe-12313-dsada \
-	-m get_workflow
+	-m poll_workflow
 ```
 
 
