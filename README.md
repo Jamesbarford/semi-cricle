@@ -57,7 +57,7 @@ The time between invokations is 5 seconds
 
 `list_envionment_variables`
 
-Gets all teh environment variables for a project, the values are masked
+Gets all the environment variables for a project, the values are masked
 
 ```sh
 ./semi_circle.sh \
