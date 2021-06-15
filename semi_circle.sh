@@ -233,10 +233,11 @@ function get_workflow() {
 }
 
 function poll_workflow() {
-    check_jq
     : '
-        Polls workflow until it is in a terminal state
+        Polls workflow until it has either succeeded or failed
     '
+    check_jq
+
     local IS_DONE=0
     while [ $IS_DONE == 0 ]; do
         local RESPONSE=$(get_workflow)

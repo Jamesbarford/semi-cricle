@@ -6,6 +6,7 @@ Has the functionality to poll a workflow until either success or failure. A syst
 ## Dependencies
 - `curl`
 - `jq`
+- `awk`
 - A circleci account and API key
 
 # Command line arguments
@@ -20,6 +21,7 @@ Has the functionality to poll a workflow until either success or failure. A syst
 The following methods are supported:
 - `get_branch_pipeline` returns pipeline information
 - `get_workflow` returns workflow information for the given pipeline id and branch
+- `poll_workflow` polls workflow until failure or success, notification is dispatched on success
 - `get_my_branch_pipeline` returns only your pipelines for a branch
 - `list_envionment_variables` returns a list of Environment Variables in circleci, the values are masked
 - `get_my_pipelines` returns all of your pipelines for a project, for all branches
