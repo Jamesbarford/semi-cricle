@@ -121,7 +121,7 @@ function sys_notify() {
     fi
 
     if [[ $OS == *"darwin"* ]]; then
-        osascript -e 'display notification '${MSG}' with title "Circle ci pipeline finished" sound name "Crystal"'
+        osascript -e 'display notification "'"${MSG}"'" with title "Circle ci pipeline finished" sound name "Crystal"'
     fi
 
     tput bel
@@ -274,7 +274,7 @@ function poll_workflow() {
     done
 
     if [ $WORKFLOW_COUNT == $DONE_COUNT ]; then
-        sys_notify "Pipline success!"
+        sys_notify "Pipeline success!"
     else
         sys_notify "Pipeline failed"
     fi
