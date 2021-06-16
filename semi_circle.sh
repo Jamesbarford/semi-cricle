@@ -9,7 +9,7 @@ PROJECT=
 COMPANY=
 METHOD=
 BRANCH=
-OS=$(uname -o | awk '{print tolower($0)}')
+OS=$(uname | awk '{print tolower($0)}')
 
 FMT_BOLD=$(tput bold)
 FMT_NORMAL=$(tput sgr0)
@@ -252,7 +252,7 @@ function poll_workflow() {
                 "success")
                     DONE_COUNT=$((DONE_COUNT + 1))
                 ;;
-                "failing"|"error")
+                "failing"|"error"|"failed")
                     IS_DONE=1
                     break
                 ;;
