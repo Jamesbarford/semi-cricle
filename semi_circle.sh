@@ -116,9 +116,14 @@ function sys_notify() {
         notifcation
     '
     local MSG=$1
-    if [[ $OS == *"linux"*  ]]; then
+    if [[ $OS == *"linux"* ]]; then
         zenity --notification --text "${MSG}"
     fi
+
+    if [[ $OS == *"darwin"* ]]; then
+        osascript -e 'display notification '${MSG}' with title "Circle ci pipeline finished" sound name "Crystal"'
+    fi
+
     tput bel
     echo $MSG
 }
