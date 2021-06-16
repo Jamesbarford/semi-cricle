@@ -1,7 +1,7 @@
 # semi-circle
 A simple circleci command line application for getting the status of pipelines. 
 
-Has the functionality to poll a workflow until either success or failure. A system notifcation will be dispatched on linux when the workflow has finished
+Has the functionality to poll a workflow until either success or failure. A system notifcation will be dispatched on linux and macos when the workflow has finished
 
 ## Dependencies
 - `curl`
