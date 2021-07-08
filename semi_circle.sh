@@ -10,7 +10,7 @@ COMPANY=
 METHOD=
 BRANCH=
 WORKFLOW_ID=
-OS=$(uname -o | awk '{print tolower($0)}')
+OS=$(uname | awk '{print tolower($0)}')
 
 FMT_BOLD=$(tput bold)
 FMT_NORMAL=$(tput sgr0)
@@ -130,9 +130,14 @@ function sys_notify() {
         notifcation
     '
     local MSG=$1
-    if [[ $OS == *"linux"*  ]]; then
+    if [[ $OS == *"linux"* ]]; then
         zenity --notification --text "${MSG}"
     fi
+
+    if [[ $OS == *"darwin"* ]]; then
+        osascript -e 'display notification "'"${MSG}"'" with title "Circle ci pipeline finished" sound name "Crystal"'
+    fi
+
     tput bel
     echo $MSG
 }
@@ -279,7 +284,7 @@ function poll_workflow() {
                 "success")
                     DONE_COUNT=$((DONE_COUNT + 1))
                 ;;
-                "failing"|"error")
+                "failing"|"error"|"failed")
                     IS_DONE=1
                     break
                 ;;
@@ -296,7 +301,7 @@ function poll_workflow() {
     done
 
     if [ $WORKFLOW_COUNT == $DONE_COUNT ]; then
-        sys_notify "Pipline success!"
+        sys_notify "Pipeline success!"
     else
         sys_notify "Pipeline failed"
     fi
