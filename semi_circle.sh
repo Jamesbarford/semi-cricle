@@ -9,6 +9,7 @@ PROJECT=
 COMPANY=
 METHOD=
 BRANCH=
+WORKFLOW_ID=
 OS=$(uname -o | awk '{print tolower($0)}')
 
 FMT_BOLD=$(tput bold)
@@ -56,6 +57,12 @@ Methods:
             $0 -i <pipeline_id> -m get_workflow
         Returns:
             Workflow in JSON for a given pipeline id, contains the status i.e running, success, failed
+
+    ${FMT_BOLD}cancel_workflow${FMT_NORMAL}
+        Usage:
+            $0 -w <workflow_id> -m cancel_workflow
+        Returns:
+            JSON indicating success in the format'{"message": "some value"}'
 
     ${FMT_BOLD}list_envionment_variables${FMT_NORMAL}
         Usage:
@@ -110,6 +117,13 @@ function check_pipeline_id() {
     fi
 }
 
+function check_workflow_id() {
+    if [ -z $WORKFLOW_ID ]; then
+        echo "-w <workflow_id> missing"
+        exit 1
+    fi
+}
+
 function sys_notify() {
     : '
         Function will make a bell sound in the terminal and fire off a system
@@ -148,7 +162,7 @@ function get_args() {
     if [ $1 == "-h" ]; then
         print_usage
     fi
-    while getopts "h:i:p:c:b:m:" ARG; do
+    while getopts "h:i:p:c:b:w:m:" ARG; do
         case $ARG in
             i)
                 PIPELINE_ID=$OPTARG
@@ -167,6 +181,9 @@ function get_args() {
             ;;
             v)
                 VCS=$OPTARG
+            ;;
+            w)
+                WORKFLOW_ID=$OPTARG
             ;;
             h)
                 print_usage
@@ -232,6 +249,16 @@ function get_workflow() {
         --header "Circle-Token: $CIRCLE_TOKEN"
 }
 
+function cancel_workflow() {
+    : '
+        Cancel a workflow using workflow id
+    '
+    check_workflow_id
+    curl -s \
+        --url "$BASE_URL/workflow/$WORKFLOW_ID/cancel" \
+        --header "Circle-Token: $CIRCLE_TOKEN"
+}
+
 function poll_workflow() {
     : '
         Polls workflow until it has either succeeded or failed
@@ -290,6 +317,10 @@ function call_method() {
         ;;
         "get_workflow")
             get_workflow
+            exit 0
+        ;;
+        "cancel_workflow")
+            cancel_workflow
             exit 0
         ;;
         "list_envionment_variables")

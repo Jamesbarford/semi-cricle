@@ -16,11 +16,13 @@ Has the functionality to poll a workflow until either success or failure. A syst
 - `-i` Pipeline id
 - `-v` Version control system, defaults to github
 - `-h` Print usage
+- `-w` Workflow id
 
 # Supported Methods
 The following methods are supported:
 - `get_branch_pipeline` returns pipeline information
 - `get_workflow` returns workflow information for the given pipeline id and branch
+- `cancel_workflow` returns json in the format `{"message": "value"}`
 - `poll_workflow` polls workflow until failure or success, notification is dispatched on success
 - `get_my_branch_pipeline` returns only your pipelines for a branch
 - `list_envionment_variables` returns a list of Environment Variables in circleci, the values are masked
@@ -50,6 +52,16 @@ In order to obtain the pipeline id, you will probably need to run the above comm
   -m get_workflow
 ```
 
+`cancel_workflow`
+
+To get a workflow id you weill need to run `get_workflow` to return a list of workflows for the specified pipeline id.
+
+```sh
+./semi_circle.sh \
+  -w eaef-13132-afdc \
+  -m cancel_workflow
+```
+
 `poll_workflow`
 
 Will poll the given pipeline id until either success or failure, this requires 'jq' to be installed.
@@ -60,7 +72,6 @@ The time between invokations is 5 seconds
   -i 13123-asddwe-12313-dsada \
   -m poll_workflow
 ```
-
 
 `list_envionment_variables`
 
