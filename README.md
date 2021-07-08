@@ -104,3 +104,8 @@ make install # this might need to be run with sudo priveleges
 ```
 
 Default location is `/usr/local/bin/semi_circle.sh`
+
+command can then be run:
+```sh
+semi_circle.sh <opts> <commands>
+```
