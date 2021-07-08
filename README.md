@@ -94,3 +94,13 @@ Returns the latest 250 pipelines for a project listed with the latest first
   -c wow_company \
   -m get_my_pipelines
 ```
+
+# Install
+
+To install run:
+
+```sh
+make install # this might need to be run with sudo priveleges
+```
+
+Default location is `/usr/local/bin/semi_circle.sh`
